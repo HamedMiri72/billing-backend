@@ -11,7 +11,7 @@ import java.util.UUID;
 public class CategoryMapper {
 
 
-    public static Category toCategoryEntity(CategoryRequest categoryRequest, Category category){
+    public static Category toCategoryEntity(CategoryRequest categoryRequest){
 
 
         return Category
@@ -24,7 +24,7 @@ public class CategoryMapper {
     }
 
 
-    public static CategoryResponse toCategoryResponse(Category category, CategoryResponse categoryResponse){
+    public static CategoryResponse toCategoryResponse(Category category){
 
         return CategoryResponse
                 .builder()
