@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
-@Component
+
 public class CategoryMapper {
 
 
@@ -33,6 +33,8 @@ public class CategoryMapper {
                 .description(category.getDescription())
                 .bgColor(category.getBgColor())
                 .imgUrl(category.getImgUrl())
+                .createdAt(category.getCreatedAt())
+                .updatedAt(category.getUpdatedAt())
                 .build();
     }
 }
