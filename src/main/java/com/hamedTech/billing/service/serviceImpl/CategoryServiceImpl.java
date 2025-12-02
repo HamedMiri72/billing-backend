@@ -7,8 +7,10 @@ import com.hamedTech.billing.exception.ResourceNotFoundException;
 import com.hamedTech.billing.mapper.CategoryMapper;
 import com.hamedTech.billing.repository.CategoryRepository;
 import com.hamedTech.billing.service.ICategoryService;
+import com.hamedTech.billing.service.IFileUploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -17,11 +19,15 @@ import java.util.List;
 public class CategoryServiceImpl implements ICategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final IFileUploadService iFileUploadService;
 
     @Override
-    public CategoryResponse addCategory(CategoryRequest categoryRequest) {
+    public CategoryResponse addCategory(CategoryRequest categoryRequest, MultipartFile file) {
 
+        String imgUrl = iFileUploadService.uploadFile(file);
         Category newCategory = CategoryMapper.toCategoryEntity(categoryRequest);
+        newCategory.setImgUrl(imgUrl);
+
         categoryRepository.save(newCategory);
         CategoryResponse response = CategoryMapper.toCategoryResponse(newCategory);
 
@@ -46,6 +52,8 @@ public class CategoryServiceImpl implements ICategoryService {
 
         Category category = categoryRepository.findByCategoryId(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("category not found with the provided id:: " + categoryId));
+
+        iFileUploadService.deleteFile(category.getImgUrl());
 
         categoryRepository.delete(category);
     }
