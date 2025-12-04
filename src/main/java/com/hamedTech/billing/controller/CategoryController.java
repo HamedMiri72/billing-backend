@@ -1,30 +1,26 @@
 package com.hamedTech.billing.controller;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hamedTech.billing.dto.CategoryRequest;
 import com.hamedTech.billing.dto.CategoryResponse;
 import com.hamedTech.billing.service.ICategoryService;
-import com.hamedTech.billing.service.IFileUploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
-import software.amazon.awssdk.thirdparty.jackson.core.JsonProcessingException;
-import tools.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/categories")
 @RequiredArgsConstructor
 public class CategoryController {
 
     private final ICategoryService iCategoryService;
 
-    @PostMapping("/create")
+    @PostMapping("/admin/categories/create")
     public ResponseEntity<CategoryResponse> addCategory(@RequestPart("category") String categoryString,
                                                         @RequestPart("file") MultipartFile file){
 
@@ -43,7 +39,7 @@ public class CategoryController {
     }
 
 
-    @GetMapping()
+    @GetMapping("/categories")
     public ResponseEntity<List<CategoryResponse>> getAllCategories(){
 
         List<CategoryResponse> responses = iCategoryService.getAllCategories();
@@ -53,7 +49,7 @@ public class CategoryController {
                 .body(responses);
     }
 
-    @DeleteMapping("/delete/{categoryId}")
+    @DeleteMapping("/admin/categories/delete/{categoryId}")
     public ResponseEntity<String> deleteCategory(@PathVariable String categoryId){
 
         try{
