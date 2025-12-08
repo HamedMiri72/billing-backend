@@ -34,14 +34,14 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(users);
     }
 
-    @GetMapping("/role")
-    public ResponseEntity<String> getRole(@RequestParam String email){
+    @GetMapping("/role/{email}")
+    public ResponseEntity<String> getRole(@PathVariable String email){
         String role = userService.getUserRole(email);
 
         return ResponseEntity.status(HttpStatus.OK).body(role);
     }
 
-    @DeleteMapping("/delete/{userId}")
+    @DeleteMapping("/users/delete/{userId}")
     public void deleteUser(@PathVariable String userId){
         userService.deleteUser(userId);
     }

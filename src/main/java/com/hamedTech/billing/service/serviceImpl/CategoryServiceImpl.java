@@ -2,10 +2,14 @@ package com.hamedTech.billing.service.serviceImpl;
 
 import com.hamedTech.billing.dto.CategoryRequest;
 import com.hamedTech.billing.dto.CategoryResponse;
+import com.hamedTech.billing.dto.item.ItemResponse;
 import com.hamedTech.billing.entity.Category;
+import com.hamedTech.billing.entity.Item;
 import com.hamedTech.billing.exception.ResourceNotFoundException;
 import com.hamedTech.billing.mapper.CategoryMapper;
+import com.hamedTech.billing.mapper.ItemMapper;
 import com.hamedTech.billing.repository.CategoryRepository;
+import com.hamedTech.billing.repository.ItemRepository;
 import com.hamedTech.billing.service.ICategoryService;
 import com.hamedTech.billing.service.IFileUploadService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +24,7 @@ public class CategoryServiceImpl implements ICategoryService {
 
     private final CategoryRepository categoryRepository;
     private final IFileUploadService iFileUploadService;
+    private final ItemRepository itemRepository;
 
     @Override
     public CategoryResponse addCategory(CategoryRequest categoryRequest, MultipartFile file) {
@@ -29,6 +34,7 @@ public class CategoryServiceImpl implements ICategoryService {
         newCategory.setImgUrl(imgUrl);
 
         categoryRepository.save(newCategory);
+
         CategoryResponse response = CategoryMapper.toCategoryResponse(newCategory);
 
         return response;
@@ -37,15 +43,30 @@ public class CategoryServiceImpl implements ICategoryService {
     @Override
     public List<CategoryResponse> getAllCategories() {
 
-
         List<Category> categories = categoryRepository.findAll();
 
         List<CategoryResponse> responses = categories
                 .stream()
-                .map(category -> CategoryMapper.toCategoryResponse(category))
+                .map(category -> {
+
+                    CategoryResponse response = CategoryMapper.toCategoryResponse(category);
+
+                    List<Item> items = itemRepository.findByCategory(category);
+
+                    List<ItemResponse> itemResponses = items
+                            .stream()
+                            .map(item -> ItemMapper.toItemResponse(item))
+                            .toList();
+
+                    response.setItems(itemResponses);
+
+                    return response;
+                })
                 .toList();
+
         return responses;
     }
+
 
     @Override
     public void deleteCategory(String categoryId) {

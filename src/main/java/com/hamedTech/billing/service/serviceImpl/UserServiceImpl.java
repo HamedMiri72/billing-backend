@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("User can not be found with this user id::" + userId));
 
 
-        userRepository.deleteById(userEntity.getId());
+        userRepository.delete(userEntity);
 
     }
 }

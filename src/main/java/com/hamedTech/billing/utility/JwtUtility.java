@@ -17,7 +17,7 @@ import java.util.function.Function;
 @Component
 public class JwtUtility {
 
-
+//    private static final String SECRET_KEY = "YWJvYXJkaHVycmllZGluYmxhbmtldHdlYXJmb2xsb3djbGVhcmJpdGdyYXBoam9ia2U=";
 
 
     public String extractUsername(String token) {

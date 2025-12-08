@@ -1,8 +1,11 @@
 package com.hamedTech.billing.dto;
 
+import com.hamedTech.billing.dto.item.ItemResponse;
+import com.hamedTech.billing.entity.Item;
 import lombok.*;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Builder
 @Getter
@@ -19,4 +22,5 @@ public class CategoryResponse {
     private String imgUrl;
     private Timestamp createdAt;
     private Timestamp updatedAt;
+    private List<ItemResponse> items;
 }
